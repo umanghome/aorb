@@ -4,55 +4,72 @@ var chevronDiv = $('.chevron-div'),
 	blockOne = $('#choice1'),
 	blockTwo = $('#choice2');
 
+var chosen = false;
+
+var inputOne = $('#choice1-input'),
+	inputTwo = $('#choice2-input');
+
 function choose () {
-	var inputOne = $('#choice1-input'),
-		inputTwo = $('#choice2-input');
-	if (inputOne.val().length < 1) {
-		inputOne.focus();
-		return false;
-	}
-	if (inputTwo.val().length < 1) {
-		inputTwo.focus();
-		return false;
-	}
-	chevronDiv.css({
-		display: 'none'
-	});
-	var number = Math.floor(Math.random() * 10 + 1);
-	if (number % 2 == 0) {
-		blockTwo.animate({
-			width: '0px'
-		}, 1000, function () {
-			blockTwo.css({
-				display: 'none'
-			})
+	if (!chosen) {
+		if (inputOne.val().length < 1) {
+			inputOne.focus();
+			return false;
+		}
+		if (inputTwo.val().length < 1) {
+			inputTwo.focus();
+			return false;
+		}
+		chevronDiv.css({
+			display: 'none'
 		});
-		blockOne.animate({
-			width: windowWidth + 'px'
+		var number = Math.floor(Math.random() * 10 + 1);
+		if (number % 2 == 0) {
+			blockTwo.animate({
+				width: '0px'
+			}, 1000);
+			blockOne.animate({
+				width: windowWidth + 'px'
+			}, 1000);
+			inputOne.animate({
+				fontSize: '50px'
+			});
+			inputOne.focus();
+		} else {
+			blockTwo.animate({
+				width: windowWidth + 'px'
+			}, 1000);
+			blockOne.animate({
+				width: '0px'
+			}, 1000);
+			inputTwo.animate({
+				fontSize: '50px'
+			});
+			inputTwo.focus();
+		}
+		chosen = true;
+	} else {
+		blockTwo.css({
+			width: '50%'
+		}, 1000);
+		blockOne.css({
+			width: '50%'
 		}, 1000);
 		inputOne.animate({
-			fontSize: '50px'
-		});
-		inputOne.focus();
-	} else {
-		blockTwo.animate({
-			width: windowWidth + 'px'
-		}, 1000);
-		blockOne.animate({
-			width: '0px'
-		}, 1000, function () {
-			blockOne.css({
-				display: 'none'
-			})
+			fontSize: '36px'
 		});
 		inputTwo.animate({
-			fontSize: '50px'
+			fontSize: '36px'
 		});
-		inputTwo.focus();
+		chevronDiv.css({
+			display: 'flex'
+		});
+		inputOne.focus();
+		chosen = false;
 	}
 }
 
-chevronDiv.on('click', document, function () {
+chevronDiv.on('click', document, function (e) {
+	e.preventDefault();
 	choose();
 })
 
